@@ -2,6 +2,7 @@ use crate::config::model::ProxyConfig;
 
 use crate::config::formats;
 use crate::config::manager;
+use crate::config::model::TimeoutsConfig;
 use crate::proxy::metrics::TestResult;
 use crate::proxy::socks5;
 use crate::validation::checker;
@@ -42,16 +43,29 @@ pub async fn test_connection(
         target_port,
         username.as_deref(),
         password.as_deref(),
+        &TimeoutsConfig::default(),
     )
     .await
 }
 
 #[tauri::command]
-pub async fn test_config_file(path: String, target_host: String, target_port: u16) -> Result<TestResult, String> {
+pub async fn test_config_file(
+    path: String,
+    target_host: String,
+    target_port: u16,
+) -> Result<TestResult, String> {
     let config = formats::load(&std::path::PathBuf::from(path)).map_err(|e| e.to_string())?;
     let addr = format!("{}:{}", config.server.host, config.server.port);
 
-    let result = socks5::test_connect(&addr, &target_host, target_port, None, None).await;
+    let result = socks5::test_connect(
+        &addr,
+        &target_host,
+        target_port,
+        None,
+        None,
+        &TimeoutsConfig::default(),
+    )
+    .await;
 
     Ok(result)
 }
