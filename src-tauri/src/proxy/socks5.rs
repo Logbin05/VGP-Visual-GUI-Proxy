@@ -1,9 +1,11 @@
 use super::metrics::TestResult;
+use crate::config::model::TimeoutsConfig;
 use std::net::Ipv4Addr;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::TcpStream,
+    time::timeout,
 };
 
 pub async fn test_connect(
@@ -12,17 +14,33 @@ pub async fn test_connect(
     target_port: u16,
     username: Option<&str>,
     password: Option<&str>,
+    timeouts: &TimeoutsConfig,
 ) -> TestResult {
     let total_start = Instant::now();
 
     let connect_start = Instant::now();
-    let mut stream = match TcpStream::connect(proxy_addr).await {
-        Ok(s) => s,
-        Err(e) => return TestResult::failure(format!("connect failed: {}", e)),
+    let connect_result = timeout(
+        Duration::from_secs(timeouts.connect_sec as u64),
+        TcpStream::connect(proxy_addr),
+    )
+    .await;
+
+    let mut stream = match connect_result {
+        Ok(Ok(s)) => s,
+        Ok(Err(e)) => return TestResult::failure(format!("connect failed: {}", e)),
+        Err(_) => {
+            return TestResult::failure(format!(
+                "connect timed out after {}s",
+                timeouts.connect_sec
+            ))
+        }
     };
 
     let connect_ms = connect_start.elapsed().as_millis() as u32;
     let handshake_start = Instant::now();
+
+    let handshake_timeout =
+        Duration::from_secs(timeouts.handshake_sec.unwrap_or(timeouts.read_sec) as u64);
 
     let has_auth = username.is_some() && password.is_some();
     let greeting: &[u8] = if has_auth {
@@ -30,9 +48,16 @@ pub async fn test_connect(
     } else {
         &[0x05, 0x01, 0x00]
     };
-
-    if let Err(e) = stream.write_all(greeting).await {
-        return TestResult::failure(format!("handshake write failed: {}", e));
+    let write_result = timeout(handshake_timeout, stream.write_all(greeting)).await;
+    match write_result {
+        Ok(Ok(())) => {}
+        Ok(Err(e)) => return TestResult::failure(format!("handshake write failed: {}", e)),
+        Err(_) => {
+            return TestResult::failure(format!(
+                "handshake write timed out after {}s",
+                timeouts.handshake_sec.unwrap_or(timeouts.read_sec)
+            ))
+        }
     }
 
     let mut response = [0u8; 2];
@@ -146,8 +171,19 @@ async fn send_auth(stream: &mut TcpStream, username: &str, password: &str) -> Re
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::config::model::TimeoutsConfig;
     use tokio::io::{AsyncReadExt, AsyncWriteExt};
     use tokio::net::TcpListener;
+
+    fn test_timeouts() -> TimeoutsConfig {
+        TimeoutsConfig {
+            connect_sec: 5,
+            read_sec: 5,
+            write_sec: 5,
+            idle_sec: 5,
+            handshake_sec: Some(5),
+        }
+    }
 
     #[tokio::test]
     async fn full_flow_succeeds_with_valid_server() {
@@ -172,7 +208,15 @@ mod tests {
                 .unwrap();
         });
 
-        let result = test_connect(&addr.to_string(), "example.com", 80, None, None).await;
+        let result = test_connect(
+            &addr.to_string(),
+            "example.com",
+            80,
+            None,
+            None,
+            &test_timeouts(),
+        )
+        .await;
         println!("{:#?}", result);
         assert!(result.success, "full flow must pass: {:?}", result.error);
     }
@@ -189,7 +233,15 @@ mod tests {
             socket.write_all(&[0xFF, 0xFF]).await.unwrap();
         });
 
-        let result = test_connect(&addr.to_string(), "example.com", 80, None, None).await;
+        let result = test_connect(
+            &addr.to_string(),
+            "example.com",
+            80,
+            None,
+            None,
+            &test_timeouts(),
+        )
+        .await;
         assert!(!result.success, "must fail on non-SOCKS server");
     }
 
@@ -233,12 +285,13 @@ mod tests {
             80,
             Some("admin"),
             Some("secret"),
+            &test_timeouts(),
         )
         .await;
         println!("{:#?}", result);
         assert!(result.success, "auth flow must pass: {:?}", result.error);
     }
-    
+
     #[tokio::test]
     async fn connect_with_ip_target() {
         let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -261,7 +314,15 @@ mod tests {
                 .unwrap();
         });
 
-        let result = test_connect(&addr.to_string(), "93.184.216.34", 80, None, None).await;
+        let result = test_connect(
+            &addr.to_string(),
+            "93.184.216.34",
+            80,
+            None,
+            None,
+            &test_timeouts(),
+        )
+        .await;
         println!("{:#?}", result);
         assert!(result.success, "IP target must work: {:?}", result.error);
     }
