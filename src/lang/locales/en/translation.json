@@ -1,0 +1,270 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Save",
+      "saveAs": "Save as…",
+      "run": "Run",
+      "recheck": "Check again",
+      "newConfig": "New config",
+      "search": "Search configurations...",
+      "checkUpdates": "Check for updates",
+      "openInEditor": "Open in editor",
+      "testConnectionAction": "Test connection",
+      "checkCompatibility": "Check compatibility",
+      "copyPath": "Copy path",
+      "copyMessage": "Copy message",
+      "copyResult": "Copy result",
+      "clearHistory": "Clear history",
+      "addUser": "add user",
+      "pickDirectory": "Choose directory…"
+    },
+    "status": {
+      "valid": "valid",
+      "warn": "warn",
+      "error": "error",
+      "passed": "PASSED",
+      "opening": "Opening…",
+      "saving": "Saving…",
+      "loading": "Loading…",
+      "parseError": "parse error"
+    },
+    "timeCompact": {
+      "minutes": "{{count}}m",
+      "hours": "{{count}}h",
+      "days": "{{count}}d",
+      "weeks": "{{count}}w"
+    },
+    "emptyStates": {
+      "fileListEmpty": "List is empty — open a directory on the Configs page"
+    },
+    "errors": {
+      "timeout": "response timed out ({{seconds}}s)"
+    }
+  },
+
+  "welcome": {
+    "appName": "VGP",
+    "tagline": "Visual GUI Proxy",
+    "sections": {
+      "getStarted": "GET STARTED",
+      "recent": "RECENT",
+      "quickStart": "QUICK START"
+    },
+    "actions": {
+      "newConfig": {
+        "title": "New config",
+        "subtitle": "SOCKS5, HTTP, Shadowsocks..."
+      },
+      "openFile": {
+        "title": "Open file",
+        "subtitle": "YAML, JSON, TOML, INI, conf, nginx"
+      }
+    },
+    "quickStart": {
+      "formRaw": {
+        "title": "Form / Raw editing",
+        "subtitle": "Parameter form and raw file — the same thing, in sync."
+      },
+      "compatCheck": {
+        "title": "Compatibility check",
+        "subtitle": "The linter finds parameter conflicts before launch."
+      },
+      "testConfigs": {
+        "title": "Config testing",
+        "subtitle": "A run with logs, latency, and connection metrics."
+      }
+    },
+    "showOnStartup": "Show this screen on startup",
+    "recentEmpty": "Empty for now — files you open or check will show up here."
+  },
+
+  "configurations": {
+    "windowTitle": "VGP — Configurations",
+    "filters": {
+      "all": "All"
+    },
+    "table": {
+      "file": "FILE",
+      "type": "TYPE",
+      "format": "FORMAT",
+      "status": "STATUS",
+      "size": "SIZE"
+    },
+    "sidebar": {
+      "overview": "OVERVIEW",
+      "formats": "FORMATS"
+    },
+    "emptyDirSelected": "No configs in the selected directory.",
+    "emptyNoDir": "Choose a directory with configs to get started."
+  },
+
+  "editor": {
+    "windowTitle": "VGP — Editor",
+    "filesPanel": "FILES",
+    "viewToggle": {
+      "form": "Form",
+      "raw": "Raw"
+    },
+    "nav": {
+      "title": "Sections",
+      "server": "Server & protocol",
+      "auth": "Authorization",
+      "timeouts": "Timeouts",
+      "limits": "Limits",
+      "tls": "TLS",
+      "network": "Network",
+      "dns": "DNS",
+      "logging": "Logging",
+      "metrics": "Metrics"
+    },
+    "sections": {
+      "server": {
+        "description": "Where the proxy accepts incoming connections and which protocol it speaks.",
+        "protocol": "Protocol",
+        "bindInterface": "Bind interface",
+        "bindInterfaceHint": "Network interface to bind to, if you need to restrict to a specific NIC (e.g. eth0).",
+        "udpAssociateSub": "Allow UDP relaying over SOCKS5",
+        "bindEnabledSub": "Allow incoming BIND connections",
+        "connectEnabledSub": "Allow the CONNECT method (needed for HTTPS through an HTTP proxy)",
+        "forwardHeaders": "Forward headers (comma-separated)",
+        "stripHeaders": "Strip headers (comma-separated)",
+        "upstreams": "Upstreams (comma-separated)"
+      },
+      "auth": {
+        "description": "Whether to require a login/password from clients and how to check them.",
+        "usersFileHint": "External file with logins instead of the list below, if one exists."
+      },
+      "timeouts": {
+        "description": "How long to wait at each stage of a connection before treating it as stuck.",
+        "idleHint": "0 disables closing idle connections."
+      },
+      "limits": {
+        "description": "Connection and rate limits, so the proxy doesn't choke.",
+        "maxConnectionsHint": "0 means the proxy won't accept any clients.",
+        "rateLimitHint": "Empty or 0 — no rate limit."
+      },
+      "tls": {
+        "description": "Encryption of traffic between the client and the proxy.",
+        "verifyPeerSub": "Verify the client's certificate"
+      },
+      "network": {
+        "description": "Low-level TCP socket settings.",
+        "tcpNodelaySub": "Disable Nagle's algorithm — lower latency",
+        "keepAliveSub": "Keep the TCP connection alive",
+        "reusePortSub": "SO_REUSEPORT for multiple workers"
+      },
+      "dns": {
+        "description": "Which DNS to use to resolve hostnames for clients."
+      },
+      "logging": {
+        "description": "Where and in what format the proxy writes logs."
+      },
+      "metrics": {
+        "description": "Metrics export for monitoring (Prometheus-style).",
+        "portConflictHint": "Matches the server port — conflict."
+      }
+    },
+    "saveResultTitle": "Validation result after saving"
+  },
+
+  "validation": {
+    "windowTitle": "VGP — Validation",
+    "errorsBlockTest_one": "{{count}} error is blocking the test",
+    "errorsBlockTest_other": "{{count}} errors are blocking the test",
+    "tabs": {
+      "errors": "{{count}} errors",
+      "warn": "{{count}} warn",
+      "info": "{{count}} info"
+    },
+    "diagnosticsTitle": "DIAGNOSTICS",
+    "emptyNoFile": "Select a file on the left to run a compatibility check."
+  },
+
+  "testRunner": {
+    "windowTitle": "VGP — Test Runner",
+    "testLogTitle": "TEST LOG",
+    "sourceConfig": "From config",
+    "sourceManual": "Manual",
+    "targetLabel": "Target:",
+    "targetHostPlaceholder": "host or IP",
+    "targetPortPlaceholder": "port",
+    "requiresAuth": "Requires authentication",
+    "waitingForStart": "$ waiting to start…",
+    "runningLog": "$ running…",
+    "sessionRuns": "Runs this session",
+    "establishingConnection": "establishing connection…",
+    "awaitingStart": "awaiting start",
+    "throughputTooltip": "Throughput isn't measured by the backend",
+    "runInProgress": "Test running…",
+    "metrics": {
+      "latency": "LATENCY",
+      "handshake": "HANDSHAKE",
+      "throughput": "THROUGHPUT",
+      "total": "Total"
+    },
+    "errors": {
+      "proxyReachableTargetFailed": "The proxy responded but couldn't reach the target",
+      "proxyUnreachable": "Proxy unreachable",
+      "generic": "Error"
+    }
+  },
+
+  "settings": {
+    "windowTitle": "VGP — Workspace Settings",
+    "nav": {
+      "title": "Settings",
+      "appearance": "Appearance",
+      "language": "Language",
+      "workspace": "Workspace",
+      "editor": "Editor",
+      "git": "Git",
+      "advanced": "Advanced",
+      "about": "About"
+    },
+    "sectionNotImplemented": "{{section}} — this section isn't implemented yet.",
+    "appearance": {
+      "title": "Appearance",
+      "subtitle": "Theme, accent, and interface density. Applied instantly across the whole workspace.",
+      "theme": "Theme",
+      "themes": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System"
+      },
+      "accentColor": "Accent color",
+      "density": "Density",
+      "densities": {
+        "compact": "Compact",
+        "comfortable": "Comfortable",
+        "spacious": "Spacious"
+      }
+    },
+    "languageSection": {
+      "title": "Interface language"
+    },
+    "workspacePanels": {
+      "title": "Workspace panels",
+      "leftRail": "Left rail",
+      "inspector": "Inspector panel",
+      "minimap": "Config minimap",
+      "statusBar": "Status bar"
+    },
+    "about": {
+      "linksTitle": "Links",
+      "updatesTitle": "Updates",
+      "autoCheckNote": "Checked automatically once a day.",
+      "lastChecked": " Last checked: {{date}}.",
+      "updateAvailable": "Version {{version}} available",
+      "upToDate": "You're on the latest version"
+    }
+  },
+
+  "updateBanner": {
+    "available": "Update {{version}} available",
+    "downloadingPercent": "— downloading {{percent}}%",
+    "downloadingEllipsis": "— downloading…",
+    "installButton": "Download and install",
+    "notificationTitle": "VGP — update available",
+    "notificationBody": "Version {{version}} is ready to install"
+  }
+}

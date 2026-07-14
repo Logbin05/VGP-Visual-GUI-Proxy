@@ -1,0 +1,273 @@
+{
+  "common": {
+    "buttons": {
+      "save": "Сохранить",
+      "saveAs": "Сохранить как…",
+      "run": "Запустить",
+      "recheck": "Проверить снова",
+      "newConfig": "Новый конфиг",
+      "search": "Поиск конфигураций...",
+      "checkUpdates": "Проверить обновления",
+      "openInEditor": "Открыть в редакторе",
+      "testConnectionAction": "Тестировать соединение",
+      "checkCompatibility": "Проверить совместимость",
+      "copyPath": "Скопировать путь",
+      "copyMessage": "Скопировать сообщение",
+      "copyResult": "Скопировать результат",
+      "clearHistory": "Очистить историю",
+      "addUser": "добавить пользователя",
+      "pickDirectory": "Выбрать директорию…"
+    },
+    "status": {
+      "note": "Статусные слова (valid/warn/error/PASSED) намеренно оставлены на английском — так они выглядят в исходном дизайне даже на русском экране.",
+      "valid": "valid",
+      "warn": "warn",
+      "error": "error",
+      "passed": "PASSED",
+      "opening": "Открываю…",
+      "saving": "Сохранение…",
+      "loading": "Загрузка…",
+      "parseError": "ошибка парсинга"
+    },
+    "timeCompact": {
+      "minutes": "{{count}} мин",
+      "hours": "{{count}} ч",
+      "days": "{{count}} д",
+      "weeks": "{{count}} нед"
+    },
+    "emptyStates": {
+      "fileListEmpty": "Список пуст — откройте директорию на странице Конфигов"
+    },
+    "errors": {
+      "timeout": "превышено время ожидания ответа ({{seconds}} с)"
+    }
+  },
+
+  "welcome": {
+    "appName": "VGP",
+    "tagline": "Visual GUI Proxy",
+    "sections": {
+      "getStarted": "НАЧАТЬ",
+      "recent": "НЕДАВНИЕ",
+      "quickStart": "БЫСТРЫЙ СТАРТ"
+    },
+    "actions": {
+      "newConfig": {
+        "title": "Новый конфиг",
+        "subtitle": "SOCKS5, HTTP, Shadowsocks..."
+      },
+      "openFile": {
+        "title": "Открыть файл",
+        "subtitle": "YAML, JSON, TOML, INI, conf, nginx"
+      }
+    },
+    "quickStart": {
+      "formRaw": {
+        "title": "Редактирование Form / Raw",
+        "subtitle": "Форма параметров и raw-файл — одно и то же, синхронно."
+      },
+      "compatCheck": {
+        "title": "Проверка совместимости",
+        "subtitle": "Linter находит конфликты параметров до запуска."
+      },
+      "testConfigs": {
+        "title": "Тестирование конфигов",
+        "subtitle": "Прогон с логом, задержкой и метриками соединения."
+      }
+    },
+    "showOnStartup": "Показывать этот экран при запуске",
+    "recentEmpty": "Пока пусто — здесь появятся файлы, которые вы открывали или проверяли."
+  },
+
+  "configurations": {
+    "windowTitle": "VGP — Конфигурации",
+    "filters": {
+      "all": "Все"
+    },
+    "table": {
+      "file": "ФАЙЛ",
+      "type": "ТИП",
+      "format": "ФОРМАТ",
+      "status": "СТАТУС",
+      "size": "РАЗМЕР"
+    },
+    "sidebar": {
+      "overview": "ОБЗОР",
+      "formats": "ФОРМАТЫ"
+    },
+    "emptyDirSelected": "Нет конфигов в выбранной директории.",
+    "emptyNoDir": "Выберите директорию с конфигами, чтобы начать."
+  },
+
+  "editor": {
+    "windowTitle": "VGP — Редактор",
+    "filesPanel": "ФАЙЛЫ",
+    "viewToggle": {
+      "form": "Форма",
+      "raw": "Raw"
+    },
+    "nav": {
+      "title": "Разделы",
+      "server": "Сервер и протокол",
+      "auth": "Авторизация",
+      "timeouts": "Таймауты",
+      "limits": "Лимиты",
+      "tls": "TLS",
+      "network": "Сеть",
+      "dns": "DNS",
+      "logging": "Логирование",
+      "metrics": "Метрики"
+    },
+    "sections": {
+      "server": {
+        "description": "Куда прокси принимает входящие соединения и по какому протоколу работает.",
+        "protocol": "Протокол",
+        "bindInterface": "Bind interface",
+        "bindInterfaceHint": "Сетевой интерфейс для привязки, если нужно ограничить конкретной картой (например eth0).",
+        "udpAssociateSub": "Разрешить проброс UDP через SOCKS5",
+        "bindEnabledSub": "Разрешить входящие BIND-соединения",
+        "connectEnabledSub": "Разрешить метод CONNECT (нужен для HTTPS через HTTP-прокси)",
+        "forwardHeaders": "Forward headers (через запятую)",
+        "stripHeaders": "Strip headers (через запятую)",
+        "upstreams": "Upstreams (через запятую)"
+      },
+      "auth": {
+        "description": "Требовать ли логин/пароль от клиентов и каким способом их проверять.",
+        "usersFileHint": "Внешний файл с логинами вместо списка ниже, если он есть."
+      },
+      "timeouts": {
+        "description": "Сколько ждать на каждом этапе соединения, прежде чем считать его зависшим.",
+        "idleHint": "0 отключает разрыв простаивающих соединений."
+      },
+      "limits": {
+        "description": "Ограничения на число соединений и скорость, чтобы прокси не захлебнулся.",
+        "maxConnectionsHint": "0 означает, что прокси не примет ни одного клиента.",
+        "rateLimitHint": "Пусто или 0 — без ограничения скорости."
+      },
+      "tls": {
+        "description": "Шифрование трафика между клиентом и прокси.",
+        "verifyPeerSub": "Проверять сертификат клиента"
+      },
+      "network": {
+        "description": "Низкоуровневые настройки TCP-сокета.",
+        "tcpNodelaySub": "Отключить алгоритм Нейгла — меньше задержка",
+        "keepAliveSub": "Держать TCP-соединение живым",
+        "reusePortSub": "SO_REUSEPORT для нескольких воркеров"
+      },
+      "dns": {
+        "description": "Через какой DNS резолвить имена хостов для клиентов."
+      },
+      "logging": {
+        "description": "Куда и в каком виде писать логи прокси."
+      },
+      "metrics": {
+        "description": "Экспорт метрик для мониторинга (Prometheus-style).",
+        "portConflictHint": "Совпадает с портом сервера — конфликт."
+      }
+    },
+    "saveResultTitle": "Результат проверки после сохранения"
+  },
+
+  "validation": {
+    "windowTitle": "VGP — Валидация",
+    "errorsBlockTest_one": "{{count}} ошибка блокирует тест",
+    "errorsBlockTest_few": "{{count}} ошибки блокируют тест",
+    "errorsBlockTest_many": "{{count}} ошибок блокируют тест",
+    "tabs": {
+      "errors": "{{count}} errors",
+      "warn": "{{count}} warn",
+      "info": "{{count}} info"
+    },
+    "diagnosticsTitle": "ДИАГНОСТИКА",
+    "emptyNoFile": "Выберите файл слева, чтобы запустить проверку совместимости."
+  },
+
+  "testRunner": {
+    "windowTitle": "VGP — Тестирование",
+    "testLogTitle": "ЛОГ ТЕСТА",
+    "sourceConfig": "Из конфига",
+    "sourceManual": "Вручную",
+    "targetLabel": "Цель:",
+    "targetHostPlaceholder": "host или IP",
+    "targetPortPlaceholder": "порт",
+    "requiresAuth": "Требует авторизации",
+    "waitingForStart": "$ ожидание запуска…",
+    "runningLog": "$ выполняется…",
+    "sessionRuns": "Прогоны в этой сессии",
+    "establishingConnection": "устанавливаем соединение…",
+    "awaitingStart": "ожидает запуска",
+    "throughputTooltip": "Пропускная способность бэкендом не измеряется",
+    "runInProgress": "Тест идёт…",
+    "metrics": {
+      "note": "Названия метрик (LATENCY/HANDSHAKE/THROUGHPUT/Total) оставлены на английском — так в исходном дизайне даже на русском экране.",
+      "latency": "LATENCY",
+      "handshake": "HANDSHAKE",
+      "throughput": "THROUGHPUT",
+      "total": "Total"
+    },
+    "errors": {
+      "proxyReachableTargetFailed": "Прокси работает, но не достучался до цели",
+      "proxyUnreachable": "Прокси недоступен",
+      "generic": "Ошибка"
+    }
+  },
+
+  "settings": {
+    "windowTitle": "VGP — Настройки рабочей области",
+    "nav": {
+      "title": "Настройки",
+      "appearance": "Оформление",
+      "language": "Язык",
+      "workspace": "Рабочая область",
+      "editor": "Редактор",
+      "git": "Git",
+      "advanced": "Расширенные",
+      "about": "О программе"
+    },
+    "sectionNotImplemented": "{{section}} — раздел ещё не реализован.",
+    "appearance": {
+      "title": "Оформление",
+      "subtitle": "Тема, акцент и плотность интерфейса. Применяется мгновенно ко всей рабочей области.",
+      "theme": "Тема",
+      "themes": {
+        "dark": "Тёмная",
+        "light": "Светлая",
+        "system": "Системная"
+      },
+      "accentColor": "Акцентный цвет",
+      "density": "Плотность",
+      "densities": {
+        "compact": "Компактно",
+        "comfortable": "Обычно",
+        "spacious": "Просторно"
+      }
+    },
+    "languageSection": {
+      "title": "Язык интерфейса"
+    },
+    "workspacePanels": {
+      "title": "Панели рабочей области",
+      "leftRail": "Левый рейл",
+      "inspector": "Панель инспектора",
+      "minimap": "Мини-карта конфига",
+      "statusBar": "Строка статуса"
+    },
+    "about": {
+      "linksTitle": "Ссылки",
+      "updatesTitle": "Обновления",
+      "autoCheckNote": "Проверяется автоматически раз в день.",
+      "lastChecked": " Последняя проверка: {{date}}.",
+      "updateAvailable": "Доступна версия {{version}}",
+      "upToDate": "У вас последняя версия"
+    }
+  },
+
+  "updateBanner": {
+    "available": "Доступно обновление {{version}}",
+    "downloadingPercent": "— загрузка {{percent}}%",
+    "downloadingEllipsis": "— загрузка…",
+    "installButton": "Скачать и установить",
+    "notificationTitle": "VGP — доступно обновление",
+    "notificationBody": "Версия {{version}} готова к установке"
+  }
+}

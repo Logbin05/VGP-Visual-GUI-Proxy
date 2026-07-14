@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "IBMPlexSans";
+  src: url(../public/fonts/IBMPlexSans.woff2);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JetBrainsMono";
+  src: url(../public/fonts/JetBrainsMono.woff2);
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SpaceGrotesk";
+  src: url(../public/fonts/SpaceGrotesk.woff2);
+  font-style: normal;
+}
+
+@theme {
+  /* color surfaces */
+  --color-app_base: oklch(0.1588 0.0137 264.08);
+  --color-panel: oklch(0.1915 0.0194 265.97);
+  --color-surface: oklch(0.2263 0.0252 263.87);
+  --color-elevated: oklch(0.2598 0.0306 262.67);
+  --color-border: oklch(0.3077 0.0338 260.86);
+
+  /* color text */
+  --color-text_primary: oklch(0.9439 0.0126 255.51);
+  --color-text_secondary: oklch(0.7085 0.0359 259.41);
+  --color-text_muted: oklch(0.5241 0.0408 258.84);
+
+  /* color accent */
+  --color-accent_primary_cyan: oklch(0.7971 0.1339 211.53);
+  --color-accent_glow_cyan: oklch(0.8651 0.1153 207.08);
+  --color-accent_select_violet: oklch(0.6742 0.1885 291.71);
+  --color-accent_select_glow_violet: oklch(0.8112 0.1013 293.57);
+
+  /* color status validate */
+  --color-status_valid: oklch(0.7833 0.1483 166.86);
+  --color-status_warning: oklch(0.8341 0.141 85.43);
+  --color-status_error: oklch(0.7071 0.1773 17.01);
+  --color-status_testing: oklch(0.7971 0.1339 211.53);
+
+  /* Typography */
+
+  /* font family */
+  --font-IBMPlexSans: "IBMPlexSans";
+  --font-JetBrainsMono: "JetBrainsMono";
+  --font-SpaceGrotesk: "SpaceGrotesk";
+
+  /* font size */
+  --text-size_xl: 2.125rem;
+  --text-size_lg: 1.375rem;
+  --text-size_md: 0.938rem;
+  --text-size_sm: 0.813rem;
+  --text-size_code: 0.813rem;
+}
+
+/* ===== Theme: light override, applied explicitly or via prefers-color-scheme ===== */
+:root[data-theme="light"] {
+  --color-app_base: oklch(0.965 0.006 264);
+  --color-panel: oklch(0.98 0.004 264);
+  --color-surface: oklch(0.92 0.008 264);
+  --color-elevated: oklch(0.87 0.012 264);
+  --color-border: oklch(0.82 0.014 264);
+
+  --color-text_primary: oklch(0.22 0.02 264);
+  --color-text_secondary: oklch(0.42 0.03 264);
+  --color-text_muted: oklch(0.58 0.03 264);
+
+  --color-accent_primary_cyan: oklch(0.58 0.13 211);
+  --color-accent_glow_cyan: oklch(0.68 0.13 211);
+
+  --color-status_valid: oklch(0.62 0.14 167);
+  --color-status_warning: oklch(0.68 0.15 85);
+  --color-status_error: oklch(0.58 0.19 17);
+  --color-status_testing: oklch(0.58 0.13 211);
+}
+
+/* "system" theme: no explicit data-theme set, follow the OS preference */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --color-app_base: oklch(0.965 0.006 264);
+    --color-panel: oklch(0.98 0.004 264);
+    --color-surface: oklch(0.92 0.008 264);
+    --color-elevated: oklch(0.87 0.012 264);
+    --color-border: oklch(0.82 0.014 264);
+
+    --color-text_primary: oklch(0.22 0.02 264);
+    --color-text_secondary: oklch(0.42 0.03 264);
+    --color-text_muted: oklch(0.58 0.03 264);
+
+    --color-accent_primary_cyan: oklch(0.58 0.13 211);
+    --color-accent_glow_cyan: oklch(0.68 0.13 211);
+
+    --color-status_valid: oklch(0.62 0.14 167);
+    --color-status_warning: oklch(0.68 0.15 85);
+    --color-status_error: oklch(0.58 0.19 17);
+    --color-status_testing: oklch(0.58 0.13 211);
+  }
+}
+
+/* ===== Accent color override (independent of theme) ===== */
+:root[data-accent="cyan"] {
+  --color-accent_primary_cyan: oklch(0.7971 0.1339 211.53);
+  --color-accent_glow_cyan: oklch(0.8651 0.1153 207.08);
+}
+:root[data-accent="violet"] {
+  --color-accent_primary_cyan: oklch(0.6742 0.1885 291.71);
+  --color-accent_glow_cyan: oklch(0.8112 0.1013 293.57);
+}
+:root[data-accent="green"] {
+  --color-accent_primary_cyan: oklch(0.7833 0.1483 166.86);
+  --color-accent_glow_cyan: oklch(0.85 0.13 162);
+}
+:root[data-accent="amber"] {
+  --color-accent_primary_cyan: oklch(0.8341 0.141 85.43);
+  --color-accent_glow_cyan: oklch(0.9 0.12 81);
+}
+:root[data-accent="pink"] {
+  --color-accent_primary_cyan: #ff6ad5;
+  --color-accent_glow_cyan: #ff9ae0;
+}
+/* higher-specificity exception: the default cyan accent is too light/pastel
+   to read on the light background, so darken it the same way the implicit
+   light-theme default is darkened above */
+:root[data-theme="light"][data-accent="cyan"] {
+  --color-accent_primary_cyan: oklch(0.58 0.13 211);
+  --color-accent_glow_cyan: oklch(0.68 0.13 211);
+}
+
+/* ===== Density: Tailwind v4 compiles spacing utilities (p-*, gap-*, w-*, h-*, ...)
+   as calc(var(--spacing) * N), so overriding this one variable rescales the
+   whole layout's whitespace without touching component code. Typography and
+   borders use separate scales and are intentionally unaffected. ===== */
+:root[data-density="compact"] {
+  --spacing: 0.2rem;
+}
+:root[data-density="comfortable"] {
+  --spacing: 0.25rem;
+}
+:root[data-density="spacious"] {
+  --spacing: 0.3125rem;
+}
