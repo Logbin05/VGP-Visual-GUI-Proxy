@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use crate::config::model::TimeoutsConfig;
+
 #[derive(Debug, Clone, Serialize)]
 pub struct TestResult {
     pub success: bool,
@@ -17,6 +19,18 @@ impl TestResult {
             handshake_ms: 0,
             total_ms: 0,
             error: Some(error),
+        }
+    }
+}
+
+impl Default for TimeoutsConfig {
+    fn default() -> Self {
+        TimeoutsConfig {
+            connect_sec: 10,
+            read_sec: 10,
+            write_sec: 10,
+            idle_sec: 30,
+            handshake_sec: Some(5),
         }
     }
 }
