@@ -548,3 +548,103 @@ pub fn save(proxy_config: &ProxyConfig, path: &Path) -> Result<(), ConfigError> 
     fs::write(path, text)?;
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::config::model::*;
+
+    fn sample_config() -> ProxyConfig {
+        ProxyConfig {
+            server: ServerConfig {
+                host: "0.0.0.0".to_string(),
+                port: 1080,
+                protocol: ProxyType::Socks5,
+                bind_interface: Some("eth0".to_string()),
+            },
+            security: SecurityConfig {
+                authentication: AuthConfig {
+                    enabled: true,
+                    method: AuthMethod::UserPass,
+                    users: vec![UserCredential {
+                        username: "admin".to_string(),
+                        password: "secret".to_string(),
+                    }],
+                    users_file: None,
+                    token: None,
+                },
+            },
+            timeouts: TimeoutsConfig {
+                connect_sec: 10,
+                read_sec: 30,
+                write_sec: 30,
+                idle_sec: 300,
+                handshake_sec: Some(5),
+            },
+            limits: LimitsConfig {
+                max_connections: 2048,
+                max_connections_per_ip: Some(128),
+                rate_limit_rps: Some(500),
+                bandwidth_limit_mbps: Some(100),
+                max_request_size: Some(1048576),
+            },
+            tls: Some(TlsConfig {
+                enabled: true,
+                cert_path: Some("/etc/vgp/cert.pem".to_string()),
+                key_path: Some("/etc/vgp/key.pem".to_string()),
+                min_version: Some(TlsVersion::Tls1_2),
+                ciphers: None,
+                verify_peer: false,
+                sni: None,
+            }),
+            network: NetworkConfig {
+                tcp_nodelay: true,
+                keep_alive: true,
+                keep_alive_interval_sec: Some(60),
+                reuse_port: false,
+                send_buffer_size: None,
+                recv_buffer_size: None,
+            },
+            dns: Some(DnsConfig {
+                upstream: "1.1.1.1".to_string(),
+                strategy: Some(DnsStrategy::PreferIpv4),
+                cache_ttl_sec: Some(300),
+                doh_url: None,
+            }),
+            logging: LoggingConfig {
+                level: LogLevel::Info,
+                format: LogFormat::Text,
+                output: LogOutput::Stdout,
+                file_path: None,
+                access_log: Some(true),
+            },
+            metrics: MetricsConfig {
+                enabled: true,
+                host: "127.0.0.1".to_string(),
+                port: 9090,
+                path: None,
+            },
+            socks5: Some(Socks5Options {
+                udp_associate: true,
+                bind_enabled: false,
+            }),
+            http: None,
+            shadowsocks: None,
+            transparent: None,
+            reverse: None,
+        }
+    }
+
+    #[test]
+    fn roundtrip_all_formats() {
+        let config = sample_config();
+
+        for ext in ["yaml", "json", "toml", "ini"] {
+            let path = std::env::temp_dir().join(format!("vgp_test.{}", ext));
+            save(&config, &path).unwrap();
+            let loaded = load(&path).unwrap();
+            assert_eq!(config, loaded, "формат {} не прошёл roundtrip", ext);
+            std::fs::remove_file(&path).unwrap();
+        }
+    }
+}
